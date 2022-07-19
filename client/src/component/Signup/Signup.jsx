@@ -9,7 +9,7 @@ function Signup() {
 
     const handleSubmit = async () => {
         if (userObject.password !== tempPassword) {
-            console.log("password fields do not match");
+            console.log("Password fields do not match.");
         } else {
             // handling form submit
             let result = await axios.post(`${process.env.REACT_APP_SERVER}/signup`, userObject);
