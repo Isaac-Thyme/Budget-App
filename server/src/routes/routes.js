@@ -27,7 +27,7 @@ routeObject.signin = async function (req, res) {
     if (userFound) {
         let flag = await bcrypt.compare(req.body.password, userFound.password);
         if (flag) {
-            res.send({ token: userFound.token });
+            res.status(202).send({ token: userFound.token });
         } else {
             res.status(404).send('Incorrect credentials provided.');
         }
@@ -37,9 +37,19 @@ routeObject.signin = async function (req, res) {
 }
 
 routeObject.budget = async function (req, res) {
-    let userFound = await Users.findOne({ token: req.body.token });
-    console.log(userFound);
-    res.send('Route hit');
+    try {
+        let u = await Users.findOne({ token: req.body.token });
+        let temp = {};
+        temp.monthlyIncome = req.body.monthlyIncome;
+        temp.monthlyLivingExpenses = req.body.monthlyLivingExpenses;
+        temp.additionalExpenses = req.body.additionalExpenses;
+        temp.personalSavings = req.body.personalSavings;
+        temp.retirementSavings = req.body.retirementSavings;
+        let userFound = await Users.findByIdAndUpdate(u._id, { budget: temp });
+        res.status(201).send(userFound);
+    } catch {
+        res.status(500).send('Incorrect credentials.')
+    }
 }
 
 module.exports = routeObject;
