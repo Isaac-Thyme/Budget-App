@@ -1,6 +1,21 @@
+#titleDiv {
+    background-color: #22698f;
+    padding: 5px;
+}
+
 #title {
     text-decoration: none;
     font-size: 40px;
     font-weight: bold;
     color: black;
+}
+
+#nav {
+    margin: 10px;
+}
+
+a {
+    text-decoration: none;
+    color: black;
+    margin: 10px;
 }
