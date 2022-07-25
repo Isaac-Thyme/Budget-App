@@ -1,7 +1,7 @@
 import { Box, InputLabel, Input, InputAdornment, Button } from "@mui/material";
 import { AccountCircle } from "@mui/icons-material";
 import { useState } from "react";
-import { setToken, deleteToken } from '../../store/token.js';
+import { setToken } from '../../store/token.js';
 import { useDispatch } from "react-redux";
 import axios from 'axios';
 import { userObject, handleInput } from '../../functions/handleInput.js';
@@ -17,6 +17,7 @@ function Signup() {
             // handling form submit
             let result = await axios.post(`${process.env.REACT_APP_SERVER}/signup`, userObject);
             console.log(result);
+            dispatch(setToken(result.data.token));
         }
     }
 
