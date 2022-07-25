@@ -1,10 +1,13 @@
 import { Box, InputLabel, Input, InputAdornment, Button } from "@mui/material";
 import { AccountCircle } from "@mui/icons-material";
 import { useState } from "react";
+import { setToken } from '../../store/token.js';
+import { useDispatch } from "react-redux";
 import axios from 'axios';
 import { userObject, handleInput } from '../../functions/handleInput.js';
 
 function Signup() {
+    let dispatch = useDispatch();
     let [tempPassword, setTempPassword] = useState("");
 
     const handleSubmit = async () => {
@@ -14,6 +17,7 @@ function Signup() {
             // handling form submit
             let result = await axios.post(`${process.env.REACT_APP_SERVER}/signup`, userObject);
             console.log(result);
+            dispatch(setToken(result.data.token));
         }
     }
 
