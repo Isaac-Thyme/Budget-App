@@ -11,6 +11,6 @@ const budgetSchema = new Schema({
     retirementSavings: { type: Number, required: false }
 });
 
-const budgetModel = model('Budget', budgetSchema);
+const Budget = model('Budget', budgetSchema);
 
-module.exports = budgetModel;
+module.exports = Budget;
