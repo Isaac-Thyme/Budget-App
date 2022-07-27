@@ -7,6 +7,7 @@ const bcrypt = require('bcrypt');
 
 // Esoteric imports
 const Users = require('../schema/Users.js');
+const Budget = require('../schema/Budget.js');
 
 const routeObject = {};
 
@@ -40,13 +41,18 @@ routeObject.budget = async function (req, res) {
     try {
         let u = await Users.findOne({ token: req.body.token });
         let temp = {};
-        temp.monthlyIncome = req.body.monthlyIncome;
-        temp.monthlyLivingExpenses = req.body.monthlyLivingExpenses;
-        temp.additionalExpenses = req.body.additionalExpenses;
-        temp.personalSavings = req.body.personalSavings;
-        temp.retirementSavings = req.body.retirementSavings;
-        let userFound = await Users.findByIdAndUpdate(u._id, { budget: temp });
-        res.status(201).send(userFound);
+        temp.monthlyIncome = req.body.monthlyIncome || undefined;
+        temp.monthlyLivingExpenses = req.body.monthlyLivingExpenses || undefined;
+        temp.additionalExpenses = req.body.additionalExpenses || undefined;
+        temp.personalSavings = req.body.personalSavings || undefined;
+        temp.retirementSavings = req.body.retirementSavings || undefined;
+        let createdBudget = await Budget.create(temp);
+        // console.log(createdBudget);
+        u.budget.push(createdBudget._id);
+        u.save();
+        // await Users.findByIdAndUpdate(push(Budget)u._id, { budget: temp });
+        console.log("here");
+        res.status(201).send(u);
     } catch {
         res.status(500).send('Incorrect credentials.')
     }
