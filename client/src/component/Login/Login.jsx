@@ -1,12 +1,27 @@
 import { Box, InputLabel, Input, InputAdornment, Button } from "@mui/material";
 import { AccountCircle } from "@mui/icons-material";
 import { useState } from "react";
+import axios from 'axios';
 
 function Login() {
+
+    const REACT_APP_SERVER = process.env.REACT_APP_SERVER;
+
     let [userObject, setUserObject] = useState({
         username: "",
         password: ""
     });
+
+    const handleSubmit = async () => {
+        try {
+            console.log('USER OBJECT', userObject);
+            let result = await axios.post(`${REACT_APP_SERVER}/login`, userObject);
+            localStorage.setItem('userData', JSON.stringify(result.data));
+            window.location = '/';
+        } catch (e) {
+            console.error(e.message);
+        }
+    }
 
     const handleInput = (e) => {
         switch (e.target.id) {
@@ -15,15 +30,12 @@ function Login() {
                     username: e.target.value,
                     password: userObject.password
                 });
-                console.log(userObject.username);
                 break;
             case "password":
                 setUserObject({
                     username: userObject.username,
                     password: e.target.value
                 });
-                console.log("password verified");
-                // negative feedback validation
                 break;
             default:
                 console.log("Something went wrong");
@@ -56,7 +68,7 @@ function Login() {
                     type="password"
                     onChange={handleInput}
                 />
-                <Button variant="outlined" onSubmit={handleInput} >Submit</Button>
+                <Button variant="outlined" onClick={handleSubmit} >Submit</Button>
             </Box>
         </div>
     );

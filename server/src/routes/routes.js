@@ -22,12 +22,12 @@ routeObject.signup = async function (req, res) {
     }
 }
 
-routeObject.signin = async function (req, res) {
+routeObject.login = async function (req, res) {
     let userFound = await Users.findOne({ username: req.body.username });
     if (userFound) {
         let flag = await bcrypt.compare(req.body.password, userFound.password);
         if (flag) {
-            res.status(202).send({ token: userFound.token });
+            res.status(202).send(userFound);
         } else {
             res.status(404).send('Incorrect credentials provided.');
         }
