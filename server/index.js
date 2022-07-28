@@ -34,7 +34,7 @@ app.get('/', (req, res) => {
 });
 
 app.post('/signup', routesObject.signup);
-app.post('/signin', routesObject.signin);
+app.post('/login', routesObject.login);
 app.post('/budget', routesObject.budget);
 
 // Server listener

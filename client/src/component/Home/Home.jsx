@@ -1,8 +1,14 @@
 import { Button, Box, TextField, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from "@mui/material";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 function Home() {
+
+    const [data, setData] = useState({});
     const [open, setOpen] = useState(false);
+
+    useEffect(() => {
+        setData(JSON.parse(localStorage.getItem('userData')));
+    }, [setData]);
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -14,6 +20,7 @@ function Home() {
 
     return (
         <div id="home">
+            {console.log(data)}
             <Button variant="outlined" onClick={handleClickOpen}>Create your budget!</Button>
             <Dialog open={open} onClose={handleClose}>
                 <DialogTitle>Create a budget</DialogTitle>
