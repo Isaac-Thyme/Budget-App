@@ -1,6 +1,12 @@
-#titleDiv {
+#header {
+    display: flex;
     background-color: #22698f;
+    align-items: flex-end;
+}
+
+#titleDiv {
     padding: 5px;
+    margin: 0 auto;
 }
 
 #title {
