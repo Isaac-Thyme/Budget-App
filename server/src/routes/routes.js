@@ -39,20 +39,23 @@ routeObject.login = async function (req, res) {
 
 routeObject.budget = async function (req, res) {
     try {
-        let u = await Users.findOne({ token: req.body.token });
-        let temp = {};
-        temp.monthlyIncome = req.body.monthlyIncome || undefined;
-        temp.monthlyLivingExpenses = req.body.monthlyLivingExpenses || undefined;
-        temp.additionalExpenses = req.body.additionalExpenses || undefined;
-        temp.personalSavings = req.body.personalSavings || undefined;
-        temp.retirementSavings = req.body.retirementSavings || undefined;
-        let createdBudget = await Budget.create(temp);
-        // console.log(createdBudget);
-        u.budget.push(createdBudget._id);
-        u.save();
-        // await Users.findByIdAndUpdate(push(Budget)u._id, { budget: temp });
-        console.log("here");
-        res.status(201).send(u);
+        let existingBudget = await Budget.findOne({ budgetName: req.body.budgetName });
+        if (existingBudget) {
+            res.status(500).send('Budget name already exists.');
+        } else {
+            let u = await Users.findOne({ token: req.body.token });
+            let temp = {};
+            temp.budgetName = req.body.budgetName;
+            temp.monthlyIncome = req.body.monthlyIncome || undefined;
+            temp.monthlyLivingExpenses = req.body.monthlyLivingExpenses || undefined;
+            temp.additionalExpenses = req.body.additionalExpenses || undefined;
+            temp.personalSavings = req.body.personalSavings || undefined;
+            temp.retirementSavings = req.body.retirementSavings || undefined;
+            let createdBudget = await Budget.create(temp);
+            u.budget.push(createdBudget.budgetName);
+            u.save();
+            res.status(201).send(u);
+        }
     } catch {
         res.status(500).send('Incorrect credentials.')
     }

@@ -1,5 +1,8 @@
 import { Button, Box, TextField, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from "@mui/material";
 import { useState, useEffect } from "react";
+import { handleInput, budgetObject } from '../../functions/handleInputHome.js';
+import axios from 'axios';
+const REACT_APP_SERVER = process.env.REACT_APP_SERVER;
 
 function Home() {
 
@@ -18,10 +21,18 @@ function Home() {
         setOpen(false);
     };
 
+    const handleSubmit = async () => {
+        budgetObject.token = data.token;
+        let result = await axios.post(`${REACT_APP_SERVER}/budget`, budgetObject);
+        localStorage.setItem('userData', JSON.stringify(result.data));
+        handleClose();
+    }
+
     return (
         <div id="home">
-            {console.log(data)}
-            <Button variant="outlined" onClick={handleClickOpen}>Create your budget!</Button>
+            {data.token ? (
+                <Button variant="outlined" onClick={handleClickOpen}>Create your budget!</Button>
+            ) : null}
             <Dialog open={open} onClose={handleClose}>
                 <DialogTitle>Create a budget</DialogTitle>
                 <DialogContent>
@@ -35,6 +46,7 @@ function Home() {
                         label="Budget name"
                         fullWidth
                         variant="standard"
+                        onChange={handleInput}
                     />
                     <TextField
                         autoFocus
@@ -43,6 +55,8 @@ function Home() {
                         label="Monthly income"
                         fullWidth
                         variant="standard"
+                        type="number"
+                        onChange={handleInput}
                     />
                     <TextField
                         autoFocus
@@ -51,6 +65,8 @@ function Home() {
                         label="Monthly expenses"
                         fullWidth
                         variant="standard"
+                        type="number"
+                        onChange={handleInput}
                     />
                     <TextField
                         autoFocus
@@ -59,6 +75,8 @@ function Home() {
                         label="Additional monthly expenses"
                         fullWidth
                         variant="standard"
+                        type="number"
+                        onChange={handleInput}
                     />
                     <TextField
                         autoFocus
@@ -67,19 +85,23 @@ function Home() {
                         label="% of income to save for retirement"
                         fullWidth
                         variant="standard"
+                        type="number"
+                        onChange={handleInput}
                     />
                     <TextField
                         autoFocus
                         margin="dense"
-                        id="personal savings"
+                        id="personal-savings"
                         label="$ amount of desired monthly savings"
                         fullWidth
                         variant="standard"
+                        type="number"
+                        onChange={handleInput}
                     />
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleClose}>Close</Button>
-                    <Button onClick={handleClose}>Submit</Button>
+                    <Button onClick={handleSubmit}>Submit</Button>
                 </DialogActions>
             </Dialog>
             <Box id="budget">
