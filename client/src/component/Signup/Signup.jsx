@@ -2,7 +2,7 @@ import { Box, InputLabel, Input, InputAdornment, Button } from "@mui/material";
 import { AccountCircle } from "@mui/icons-material";
 import { useState } from "react";
 import axios from 'axios';
-import { userObject, handleInput } from '../../functions/handleInput.js';
+import { userObject, handleInput } from '../../functions/handleInputSignup.js';
 
 function Signup() {
     let [tempPassword, setTempPassword] = useState("");

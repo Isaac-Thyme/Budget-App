@@ -5,7 +5,6 @@ function Header() {
     if (token) {
         token = token.token;
     }
-    console.log(token);
 
     // logout function
     const logout = () => {
@@ -21,11 +20,11 @@ function Header() {
             <div id='nav'>
                 {
                     token ? (
-                        <p onClick={logout}>Logout</p>
+                        <p className='link' onClick={logout}>Logout</p>
                     ) : (
                         <>
-                            <a href="/login">Login</a>
-                            <a href="/signup">Signup</a>
+                            <a className='link' href="/login">Login</a>
+                            <a className='link' href="/signup">Signup</a>
                         </>
                     )
                 }

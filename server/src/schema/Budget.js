@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const { Schema, model } = mongoose;
 
 const budgetSchema = new Schema({
+    budgetName: { type: String, required: true },
     monthlyIncome: { type: Number, required: false },
     monthlyLivingExpenses: { type: Number, required: false },
     additionalExpenses: { type: Number, required: false },
