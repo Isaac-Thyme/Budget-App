@@ -1,4 +1,5 @@
 import './Header.css';
+import { Link } from 'react-router-dom';
 
 function Header() {
     let token = JSON.parse(localStorage.getItem("userData"));
@@ -15,16 +16,16 @@ function Header() {
     return (
         <div id="header">
             <div id='titleDiv'>
-                <a id="title" href="/">Budget App</a>
+                <Link to="/">Budget App</Link>
             </div>
             <div id='nav'>
                 {
                     token ? (
-                        <p className='link' onClick={logout}>Logout</p>
+                        <Link to="/" onClick={logout}>Logout</Link>
                     ) : (
                         <>
-                            <a className='link' href="/login">Login</a>
-                            <a className='link' href="/signup">Signup</a>
+                            <Link to="/login">Login</Link>
+                            <Link to="/signup">Signup</Link>
                         </>
                     )
                 }
