@@ -1,9 +1,10 @@
 'use strict';
 
 // Third party/ENV imports
-const SECRET = process.env.SECRET;
-const jwt = require('jsonwebtoken');
+// const SECRET = process.env.SECRET;
+// const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
+const { signToken } = require('../utils/auth.js');
 
 // Esoteric imports
 const Users = require('../schema/Users.js');
@@ -14,10 +15,11 @@ const routeObject = {};
 routeObject.signup = async function (req, res) {
     let alreadyExists = await Users.find({ email: req.body.email });
     if (alreadyExists.length === 0) {
-        req.body.token = jwt.sign({ email: req.body.email }, SECRET);
+        // req.body.token = jwt.sign({ email: req.body.email }, SECRET);
         req.body.password = await bcrypt.hash(req.body.password, 10);
-        let result = await Users.create(req.body);
-        res.json(result);
+        let user = await Users.create(req.body);
+        const token = signToken(user);
+        res.json({ user, token });
     } else {
         res.status(500).send("A user with that email already exists.");
     }
