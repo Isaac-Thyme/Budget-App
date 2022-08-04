@@ -36,6 +36,7 @@ app.get('/', (req, res) => {
 app.post('/signup', routesObject.signup);
 app.post('/login', routesObject.login);
 app.post('/budget', routesObject.budget);
+app.get('/budget', routesObject.getBudget);
 
 // Server listener
 app.listen(PORT, () => {

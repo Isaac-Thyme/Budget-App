@@ -61,4 +61,13 @@ routeObject.budget = async function (req, res) {
     }
 }
 
+routeObject.getBudget = async function (req, res) {
+    try {
+        let budget = await Budget.findOne({ budgetName: req.query.budgetName });
+        res.status(200).send(budget);
+    } catch {
+        res.status(400).send('Budget not found')
+    }
+}
+
 module.exports = routeObject;

@@ -26,12 +26,29 @@ function Home() {
         let result = await axios.post(`${REACT_APP_SERVER}/budget`, budgetObject);
         localStorage.setItem('userData', JSON.stringify(result.data));
         handleClose();
-    }
+    };
+
+    const displayBudget = async (budgetName) => {
+        let result = await axios.get(`${REACT_APP_SERVER}/budget?budgetName=${budgetName}`);
+        console.log(result);
+    };
 
     return (
         <div id="home">
             {data.token ? (
-                <Button variant="outlined" onClick={handleClickOpen}>Create your budget!</Button>
+                <div id="loggedInView">
+                    <Button variant="outlined" onClick={handleClickOpen}>Create your budget!</Button>
+                    <Box id="budget">
+                        <p>Your budgets: </p>
+                        {data.budget.map((item, idx) => (
+                            <div key={idx}>
+                                <Button onClick={() => displayBudget(item)}>{item}</Button>
+                            </div>
+                        ))}
+                        <Button variant="outlined">Add a daily expense</Button>
+                        <Button variant="outlined">Add a daily additional income</Button>
+                    </Box>
+                </div>
             ) : null}
             <Dialog open={open} onClose={handleClose}>
                 <DialogTitle>Create a budget</DialogTitle>
@@ -104,16 +121,6 @@ function Home() {
                     <Button onClick={handleSubmit}>Submit</Button>
                 </DialogActions>
             </Dialog>
-            <Box id="budget">
-                <p>view of budget</p>
-                <Button variant="outlined">Add a daily expense</Button>
-                <Button variant="outlined">Add a daily additional income</Button>
-            </Box>
-            <Box id="budget-view-btns">
-                <Button variant="outlined">Daily View</Button>
-                <Button variant="outlined">Weekly View</Button>
-                <Button variant="outlined">Monthly View</Button>
-            </Box>
         </div>
     );
 }
