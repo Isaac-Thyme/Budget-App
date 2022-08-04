@@ -30,7 +30,8 @@ routeObject.login = async function (req, res) {
     if (userFound) {
         let flag = await bcrypt.compare(req.body.password, userFound.password);
         if (flag) {
-            res.status(202).send(userFound);
+            const token = signToken(userFound);
+            res.status(202).send({ userFound, token });
         } else {
             res.status(404).send('Incorrect credentials provided.');
         }
