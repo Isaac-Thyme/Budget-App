@@ -10,6 +10,7 @@ const PORT = process.env.PORT;
 
 // Esoteric imports
 const routesObject = require('./src/routes/routes.js');
+const { authMiddleware } = require('./src/utils/auth.js');
 
 // Application configuration
 app.use(express.json());
@@ -35,8 +36,8 @@ app.get('/', (req, res) => {
 
 app.post('/signup', routesObject.signup);
 app.post('/login', routesObject.login);
-app.post('/budget', routesObject.budget);
-app.get('/budget', routesObject.getBudget);
+app.post('/budget', authMiddleware, routesObject.budget);
+app.get('/budget', authMiddleware, routesObject.getBudget);
 
 // Server listener
 app.listen(PORT, () => {

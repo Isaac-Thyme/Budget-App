@@ -1,8 +1,6 @@
 'use strict';
 
 // Third party/ENV imports
-// const SECRET = process.env.SECRET;
-// const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const { signToken } = require('../utils/auth.js');
 
@@ -15,7 +13,6 @@ const routeObject = {};
 routeObject.signup = async function (req, res) {
     let alreadyExists = await Users.find({ email: req.body.email });
     if (alreadyExists.length === 0) {
-        // req.body.token = jwt.sign({ email: req.body.email }, SECRET);
         req.body.password = await bcrypt.hash(req.body.password, 10);
         let user = await Users.create(req.body);
         const token = signToken(user);
@@ -46,7 +43,7 @@ routeObject.budget = async function (req, res) {
         if (existingBudget) {
             res.status(500).send('Budget name already exists.');
         } else {
-            let u = await Users.findOne({ token: req.body.token });
+            let u = await Users.findOne({ username: req.username });
             let temp = {};
             temp.budgetName = req.body.budgetName;
             temp.monthlyIncome = req.body.monthlyIncome || undefined;
