@@ -10,11 +10,11 @@ module.exports = {
         return token;
     },
     authMiddleware: function (req, res, next) {
-        // allow token to be sent via headers
-        let token = req.headers.authorization;
+        // allow token to be sent via the body
+        let token = req.body.token;
 
         // seperate "Bearer" from "<tokenvalue>"
-        if (req.headers.authorization) {
+        if (req.body.token) {
             token = token
                 .split(' ')
                 .pop()

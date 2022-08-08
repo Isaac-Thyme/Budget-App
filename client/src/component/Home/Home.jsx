@@ -6,7 +6,7 @@ const REACT_APP_SERVER = process.env.REACT_APP_SERVER;
 
 function Home() {
 
-    const [data, setData] = useState({});
+    const [data, setData] = useState('');
     const [open, setOpen] = useState(false);
 
     useEffect(() => {
@@ -22,29 +22,35 @@ function Home() {
     };
 
     const handleSubmit = async () => {
+        // Todo: change this token to the token from localstorage
         budgetObject.token = data.token;
         let result = await axios.post(`${REACT_APP_SERVER}/budget`, budgetObject);
         localStorage.setItem('userData', JSON.stringify(result.data));
+        setData(result.data);
         handleClose();
     };
 
     const displayBudget = async (budgetName) => {
         let result = await axios.get(`${REACT_APP_SERVER}/budget?budgetName=${budgetName}`);
+        // Todo: add to state so we can render to page
         console.log(result);
     };
 
     return (
         <div id="home">
-            {data.token ? (
+            {/* Todo: Read from a property of data or switch to token */}
+            {data ? (
                 <div id="loggedInView">
                     <Button variant="outlined" onClick={handleClickOpen}>Create your budget!</Button>
                     <Box id="budget">
                         <p>Your budgets: </p>
-                        {data.budget.map((item, idx) => (
+                        {data.budget ? data.budget.map((item, idx) => (
                             <div key={idx}>
                                 <Button onClick={() => displayBudget(item)}>{item}</Button>
                             </div>
-                        ))}
+                        )) : (
+                            <p>No budgets yet...</p>
+                        )}
                         <Button variant="outlined">Add a daily expense</Button>
                         <Button variant="outlined">Add a daily additional income</Button>
                     </Box>

@@ -16,7 +16,8 @@ function Login() {
         try {
             console.log('USER OBJECT', userObject);
             let result = await axios.post(`${REACT_APP_SERVER}/login`, userObject);
-            localStorage.setItem('userData', JSON.stringify(result.data));
+            localStorage.setItem('userData', JSON.stringify(result.data.user));
+            localStorage.setItem('token', JSON.stringify(result.data.token));
             window.location = '/';
         } catch (e) {
             console.error(e.message);
@@ -44,7 +45,7 @@ function Login() {
 
     return (
         <div id="login">
-            <h1>Welcome to the login page</h1>
+            <h1>Login</h1>
             <Box>
                 {/* creating the username textfield */}
                 <InputLabel htmlFor="input-with-icon-adornment">
