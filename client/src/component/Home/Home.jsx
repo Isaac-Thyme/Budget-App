@@ -22,8 +22,7 @@ function Home() {
     };
 
     const handleSubmit = async () => {
-        // Todo: change this token to the token from localstorage
-        budgetObject.token = data.token;
+        budgetObject.token = JSON.parse(localStorage.getItem("token"));
         let result = await axios.post(`${REACT_APP_SERVER}/budget`, budgetObject);
         localStorage.setItem('userData', JSON.stringify(result.data));
         setData(result.data);
@@ -31,8 +30,11 @@ function Home() {
     };
 
     const displayBudget = async (budgetName) => {
-        let result = await axios.get(`${REACT_APP_SERVER}/budget?budgetName=${budgetName}`);
+        let tempToken = JSON.parse(localStorage.getItem("token"));
+        let params = { budgetName: budgetName, token: tempToken };
+        let result = await axios.get(`${REACT_APP_SERVER}/budget`, { params });
         // Todo: add to state so we can render to page
+        // Todo: math behind the budget
         console.log(result);
     };
 

@@ -10,16 +10,16 @@ module.exports = {
         return token;
     },
     authMiddleware: function (req, res, next) {
-        // allow token to be sent via the body
-        let token = req.body.token;
+        // allow token to be sent via the body or params
+        let token = req.body.token || req.query.token;
 
         // seperate "Bearer" from "<tokenvalue>"
-        if (req.body.token) {
-            token = token
-                .split(' ')
-                .pop()
-                .trim();
-        }
+        // if (req.body.token) {
+        //     token = token
+        //         .split(' ')
+        //         .pop()
+        //         .trim();
+        // }
 
         // if no token, return request object as is
         if (!token) {
