@@ -18,7 +18,8 @@ function Signup() {
                 // handling form submit
                 console.log(userObject);
                 let result = await axios.post(`${process.env.REACT_APP_SERVER}/signup`, userObject);
-                localStorage.setItem('userData', JSON.stringify(result.data));
+                localStorage.setItem('userData', JSON.stringify(result.data.user));
+                localStorage.setItem('token', JSON.stringify(result.data.token));
                 window.location = "/";
             }
         } catch (e) {
