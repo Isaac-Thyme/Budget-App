@@ -1,17 +1,24 @@
-import { Button, Box, TextField, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from "@mui/material";
+import { Button, Box, TextField, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, tableBodyClasses } from "@mui/material";
 import { useState, useEffect } from "react";
 import { handleInput, budgetObject } from '../../functions/handleInputHome.js';
 import axios from 'axios';
+import { getRemainingDays } from "../../functions/getDate";
+import BudgetTable from "../BudgetTable/BudgetTable.jsx";
 const REACT_APP_SERVER = process.env.REACT_APP_SERVER;
 
 function Home() {
 
     const [data, setData] = useState('');
     const [open, setOpen] = useState(false);
+    const [budget, setBudget] = useState({});
 
     useEffect(() => {
         setData(JSON.parse(localStorage.getItem('userData')));
     }, [setData]);
+
+    useEffect(() => {
+        // triggers rerender on budget change
+    }, [budget]);
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -33,9 +40,17 @@ function Home() {
         let tempToken = JSON.parse(localStorage.getItem("token"));
         let params = { budgetName: budgetName, token: tempToken };
         let result = await axios.get(`${REACT_APP_SERVER}/budget`, { params });
-        // Todo: add to state so we can render to page
-        // Todo: math behind the budget
-        console.log(result);
+        setBudget(result.data);
+        let moneyRemainingMonthly = budget.monthlyIncome - budget.personalSavings - budget.retirementSavings - budget.monthlyLivingExpenses - budget.additionalExpenses;
+        let remainingDays = getRemainingDays();
+        let moneyRemainingDaily = moneyRemainingMonthly / remainingDays;
+        // budget.moneyRemainingWeekly = budget.moneyRemainingMonthly / ;
+        let temp = budget;
+        temp.moneyRemainingDaily = moneyRemainingDaily;
+        temp.moneyRemainingMonthly = moneyRemainingMonthly;
+        setBudget(temp);
+        console.log(temp);
+        // error receiving correct budget upon page load
     };
 
     return (
@@ -44,7 +59,7 @@ function Home() {
             {data ? (
                 <div id="loggedInView">
                     <Button variant="outlined" onClick={handleClickOpen}>Create your budget!</Button>
-                    <Box id="budget">
+                    <div id="budget">
                         <p>Your budgets: </p>
                         {data.budget ? data.budget.map((item, idx) => (
                             <div key={idx}>
@@ -55,7 +70,8 @@ function Home() {
                         )}
                         <Button variant="outlined">Add a daily expense</Button>
                         <Button variant="outlined">Add a daily additional income</Button>
-                    </Box>
+                    </div>
+                    <BudgetTable budget={budget} />
                 </div>
             ) : null}
             <Dialog open={open} onClose={handleClose}>
