@@ -1,9 +1,11 @@
-import { Button, Box, TextField, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, tableBodyClasses } from "@mui/material";
+import { Button } from "@mui/material";
 import { useState, useEffect } from "react";
 import { handleInput, budgetObject } from '../../functions/handleInputHome.js';
 import axios from 'axios';
 import { getRemainingDays } from "../../functions/getDate";
 import BudgetTable from "../BudgetTable/BudgetTable.jsx";
+import Modal from '../Modal/Modal.jsx';
+import fakeBudget from "../../functions/fakeBudget.js";
 const REACT_APP_SERVER = process.env.REACT_APP_SERVER;
 
 function Home() {
@@ -11,14 +13,12 @@ function Home() {
     const [data, setData] = useState('');
     const [open, setOpen] = useState(false);
     const [budget, setBudget] = useState({});
+    const [token, setToken] = useState('');
 
     useEffect(() => {
         setData(JSON.parse(localStorage.getItem('userData')));
-    }, [setData]);
-
-    useEffect(() => {
-        // triggers rerender on budget change
-    }, [budget]);
+        setToken(JSON.parse(localStorage.getItem('token')));
+    }, [setData, setToken]);
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -37,26 +37,22 @@ function Home() {
     };
 
     const displayBudget = async (budgetName) => {
+        // Todo: Create weekly remaining budget
         let tempToken = JSON.parse(localStorage.getItem("token"));
         let params = { budgetName: budgetName, token: tempToken };
         let result = await axios.get(`${REACT_APP_SERVER}/budget`, { params });
-        setBudget(result.data);
-        let moneyRemainingMonthly = budget.monthlyIncome - budget.personalSavings - budget.retirementSavings - budget.monthlyLivingExpenses - budget.additionalExpenses;
-        let remainingDays = getRemainingDays();
-        let moneyRemainingDaily = moneyRemainingMonthly / remainingDays;
-        // budget.moneyRemainingWeekly = budget.moneyRemainingMonthly / ;
-        let temp = budget;
-        temp.moneyRemainingDaily = moneyRemainingDaily;
-        temp.moneyRemainingMonthly = moneyRemainingMonthly;
-        setBudget(temp);
-        console.log(temp);
-        // error receiving correct budget upon page load
+        let tempCopy = result.data;
+        let moneyRemainingMonthly = tempCopy.monthlyIncome - tempCopy.personalSavings - tempCopy.retirementSavings - tempCopy.monthlyLivingExpenses - tempCopy.additionalExpenses;
+        moneyRemainingMonthly = Math.round(moneyRemainingMonthly * 100) / 100;
+        let moneyRemainingDaily = Math.round((moneyRemainingMonthly / getRemainingDays()) * 100) / 100;
+        tempCopy.moneyRemainingMonthly = moneyRemainingMonthly;
+        tempCopy.moneyRemainingDaily = moneyRemainingDaily;
+        setBudget(tempCopy);
     };
 
     return (
         <div id="home">
-            {/* Todo: Read from a property of data or switch to token */}
-            {data ? (
+            {token ? (
                 <div id="loggedInView">
                     <Button variant="outlined" onClick={handleClickOpen}>Create your budget!</Button>
                     <div id="budget">
@@ -68,83 +64,18 @@ function Home() {
                         )) : (
                             <p>No budgets yet...</p>
                         )}
+                        {/* Todo: Add functionality to these buttons, maybe add the ability to subtract income or daily expenses */}
                         <Button variant="outlined">Add a daily expense</Button>
                         <Button variant="outlined">Add a daily additional income</Button>
                     </div>
-                    <BudgetTable budget={budget} />
+                    {data.budget.length ? (
+                        <BudgetTable budget={budget} />
+                    ) : (
+                        <BudgetTable budget={fakeBudget} />
+                    )}
                 </div>
             ) : null}
-            <Dialog open={open} onClose={handleClose}>
-                <DialogTitle>Create a budget</DialogTitle>
-                <DialogContent>
-                    <DialogContentText>
-                        Fill out the below questions to create a customized budget!
-                    </DialogContentText>
-                    <TextField
-                        autoFocus
-                        margin="dense"
-                        id="name"
-                        label="Budget name"
-                        fullWidth
-                        variant="standard"
-                        onChange={handleInput}
-                    />
-                    <TextField
-                        autoFocus
-                        margin="dense"
-                        id="income"
-                        label="Monthly income"
-                        fullWidth
-                        variant="standard"
-                        type="number"
-                        onChange={handleInput}
-                    />
-                    <TextField
-                        autoFocus
-                        margin="dense"
-                        id="expenses"
-                        label="Monthly expenses"
-                        fullWidth
-                        variant="standard"
-                        type="number"
-                        onChange={handleInput}
-                    />
-                    <TextField
-                        autoFocus
-                        margin="dense"
-                        id="additional-expenses"
-                        label="Additional monthly expenses"
-                        fullWidth
-                        variant="standard"
-                        type="number"
-                        onChange={handleInput}
-                    />
-                    <TextField
-                        autoFocus
-                        margin="dense"
-                        id="retirement-savings"
-                        label="% of income to save for retirement"
-                        fullWidth
-                        variant="standard"
-                        type="number"
-                        onChange={handleInput}
-                    />
-                    <TextField
-                        autoFocus
-                        margin="dense"
-                        id="personal-savings"
-                        label="$ amount of desired monthly savings"
-                        fullWidth
-                        variant="standard"
-                        type="number"
-                        onChange={handleInput}
-                    />
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={handleClose}>Close</Button>
-                    <Button onClick={handleSubmit}>Submit</Button>
-                </DialogActions>
-            </Dialog>
+            <Modal handleClose={handleClose} open={open} handleInput={handleInput} handleSubmit={handleSubmit} />
         </div>
     );
 }

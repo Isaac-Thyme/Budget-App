@@ -2,15 +2,17 @@ import { Box, InputLabel, Input, InputAdornment, Button } from "@mui/material";
 import { AccountCircle } from "@mui/icons-material";
 import { useState } from "react";
 import axios from 'axios';
+const REACT_APP_SERVER = process.env.REACT_APP_SERVER;
+
+// Todo: Error handling for password mismatch
 
 function Login() {
-
-    const REACT_APP_SERVER = process.env.REACT_APP_SERVER;
 
     let [userObject, setUserObject] = useState({
         username: "",
         password: ""
     });
+    const [error, setError] = useState('');
 
     const handleSubmit = async () => {
         try {
@@ -20,7 +22,7 @@ function Login() {
             localStorage.setItem('token', JSON.stringify(result.data.token));
             window.location = '/';
         } catch (e) {
-            console.error(e.message);
+            setError(e.message);
         }
     }
 
@@ -46,6 +48,9 @@ function Login() {
     return (
         <div id="login">
             <h1>Login</h1>
+            {error ? (
+                <h3 id="error">{error === 'Network Error' ? 'Servers are down...' : error}</h3>
+            ) : null}
             <Box>
                 {/* creating the username textfield */}
                 <InputLabel htmlFor="input-with-icon-adornment">

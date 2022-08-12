@@ -5,6 +5,8 @@ import { useState, useRef } from "react";
 import axios from 'axios';
 import { userObject, handleInput } from '../../functions/handleInputSignup.js';
 
+// Todo: Error handling for password mismatch
+
 function Signup() {
     let [tempPassword, setTempPassword] = useState("");
     const [error, setError] = useState('');
