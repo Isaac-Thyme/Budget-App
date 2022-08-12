@@ -40,14 +40,13 @@ function Home() {
         // Todo: Create weekly remaining budget
         let tempToken = JSON.parse(localStorage.getItem("token"));
         let params = { budgetName: budgetName, token: tempToken };
-        let result = await axios.get(`${REACT_APP_SERVER}/budget`, { params });
-        let tempCopy = result.data;
-        let moneyRemainingMonthly = tempCopy.monthlyIncome - tempCopy.personalSavings - tempCopy.retirementSavings - tempCopy.monthlyLivingExpenses - tempCopy.additionalExpenses;
+        let { data } = await axios.get(`${REACT_APP_SERVER}/budget`, { params });
+        let moneyRemainingMonthly = data.monthlyIncome - data.personalSavings - data.retirementSavings - data.monthlyLivingExpenses - data.additionalExpenses;
         moneyRemainingMonthly = Math.round(moneyRemainingMonthly * 100) / 100;
         let moneyRemainingDaily = Math.round((moneyRemainingMonthly / getRemainingDays()) * 100) / 100;
-        tempCopy.moneyRemainingMonthly = moneyRemainingMonthly;
-        tempCopy.moneyRemainingDaily = moneyRemainingDaily;
-        setBudget(tempCopy);
+        data.moneyRemainingMonthly = moneyRemainingMonthly;
+        data.moneyRemainingDaily = moneyRemainingDaily;
+        setBudget(data);
     };
 
     return (
