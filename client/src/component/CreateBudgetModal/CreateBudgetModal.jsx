@@ -1,6 +1,6 @@
 import { Button, TextField, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from "@mui/material";
 
-function Modal({ open, handleClose, handleInput, handleSubmit }) {
+function CreateBudgetModal({ open, handleClose, handleInput, handleSubmit }) {
     return (
         <Dialog open={open} onClose={handleClose}>
             <DialogTitle>Create a budget</DialogTitle>
@@ -76,4 +76,4 @@ function Modal({ open, handleClose, handleInput, handleSubmit }) {
     );
 }
 
-export default Modal;
+export default CreateBudgetModal;
