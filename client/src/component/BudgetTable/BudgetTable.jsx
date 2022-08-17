@@ -4,7 +4,7 @@ function BudgetTable({ budget }) {
     return (
         <div id="budgetDisplay">
             <div className="flexChildren">
-                <h2>Selected Budget: {budget.budgetName}</h2>
+                <h2>Selected Budget: {budget ? budget.budgetName : ""}</h2>
             </div>
             <div className="flexChildren">
                 <h2>Monthly Income: {budget.monthlyIncome}</h2>

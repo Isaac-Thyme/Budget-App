@@ -9,7 +9,20 @@ let budgetObject = {
     retirementSavings: NaN
 }
 
-const handleInput = (e) => {
+let editedBudgetObject = {
+    dailyIncrease: 0,
+    dailyDecrease: 0
+}
+
+const handleEditBudgetInput = (e) => {
+    if (e.target.id === "increase") {
+        editedBudgetObject.dailyIncrease = e.target.value;
+    } else {
+        editedBudgetObject.dailyDecrease = e.target.value;
+    }
+}
+
+const handleCreateBudgetInput = (e) => {
     switch (e.target.id) {
         case "name":
             budgetObject = {
@@ -76,4 +89,4 @@ const handleInput = (e) => {
     }
 }
 
-export { handleInput, budgetObject };
+export { handleCreateBudgetInput, handleEditBudgetInput, budgetObject, editedBudgetObject };
