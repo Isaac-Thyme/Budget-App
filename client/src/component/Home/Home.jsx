@@ -44,7 +44,8 @@ function Home() {
 
     const handleEditBudgetSubmit = async () => {
         try {
-            // TODO: Create route on backend for PUT /budget, return full user once done
+            // TODO: Create route on backend for PUT /budget, return full user once done (returning full Budget??)
+            // Returns full budget/ Only updates additionalExpenses
             // editedBudgetObject.token = JSON.parse(localStorage.getItem("token"));
             // let result = await axios.put(`${REACT_APP_SERVER}/budget`, editedBudgetObject);
             // localStorage.setItem('userData', JSON.stringify(result.data));
