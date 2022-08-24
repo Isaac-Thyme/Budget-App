@@ -70,4 +70,15 @@ routeObject.getBudget = async function (req, res) {
     }
 }
 
+routeObject.edit = async function (req, res) {
+    try {
+        let foundBudget = await Budget.findOne({ budgetName: req.body.budgetName });
+        let newExpenses = foundBudget.additionalExpenses + req.body.additionalExpenses;
+        let budget = await Budget.findOneAndUpdate({ budgetName: req.body.budgetName }, { additionalExpenses: newExpenses }, { new: true });
+        res.status(200).send(budget);
+    } catch {
+        res.status(400).send('Budget not found');
+    }
+}
+
 module.exports = routeObject;

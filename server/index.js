@@ -38,6 +38,7 @@ app.post('/signup', routesObject.signup);
 app.post('/login', routesObject.login);
 app.post('/budget', authMiddleware, routesObject.budget);
 app.get('/budget', authMiddleware, routesObject.getBudget);
+app.put('/edit', routesObject.edit);
 
 // Server listener
 app.listen(PORT, () => {
