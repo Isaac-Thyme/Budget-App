@@ -9,16 +9,15 @@ let budgetObject = {
     retirementSavings: NaN
 }
 
-let editedBudgetObject = {
-    dailyIncrease: 0,
-    dailyDecrease: 0
+let editedExpensesObject = {
+    additionalExpenses: 0
 }
 
-const handleEditBudgetInput = (e) => {
+const handleEditExpensesInput = (e) => {
     if (e.target.id === "increase") {
-        editedBudgetObject.dailyIncrease = e.target.value;
+        editedExpensesObject.additionalExpenses = 0 - (e.target.value);
     } else {
-        editedBudgetObject.dailyDecrease = e.target.value;
+        editedExpensesObject.additionalExpenses = e.target.value;
     }
 }
 
@@ -89,4 +88,4 @@ const handleCreateBudgetInput = (e) => {
     }
 }
 
-export { handleCreateBudgetInput, handleEditBudgetInput, budgetObject, editedBudgetObject };
+export { handleCreateBudgetInput, handleEditExpensesInput, budgetObject, editedExpensesObject };

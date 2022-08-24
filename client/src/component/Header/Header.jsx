@@ -6,8 +6,8 @@ function Header() {
 
     // logout function
     const logout = () => {
-        localStorage.setItem("userData", JSON.stringify({}));
-        localStorage.setItem("token", JSON.stringify(""));
+        localStorage.removeItem("userData");
+        localStorage.removeItem("token");
         window.location.reload(false);
     }
 

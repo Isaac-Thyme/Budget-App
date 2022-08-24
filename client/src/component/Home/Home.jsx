@@ -1,11 +1,11 @@
 import { Button } from "@mui/material";
 import { useState, useEffect } from "react";
-import { handleCreateBudgetInput, handleEditBudgetInput, budgetObject, editedBudgetObject } from '../../functions/handleInputHome.js';
+import { handleCreateBudgetInput, handleEditExpensesInput, budgetObject, editedExpensesObject } from '../../functions/handleInputHome.js';
 import axios from 'axios';
 import { getRemainingDays } from "../../functions/getDate";
 import BudgetTable from "../BudgetTable/BudgetTable.jsx";
 import CreateBudgetModal from '../CreateBudgetModal/CreateBudgetModal.jsx';
-import EditBudgetModal from '../EditBudgetModal/EditBudgetModal.jsx';
+import EditBudgetModal from '../EditExpensesModal/EditExpensesModal.jsx';
 import fakeBudget from "../../functions/fakeBudget.js";
 const REACT_APP_SERVER = process.env.REACT_APP_SERVER;
 
@@ -16,6 +16,7 @@ function Home() {
     const [openEditModal, setOpenEditModal] = useState(false);
     const [budget, setBudget] = useState('');
     const [token, setToken] = useState('');
+    const [selectedBudget, setSelectedBudget] = useState('');
 
     useEffect(() => {
         setData(JSON.parse(localStorage.getItem('userData')));
@@ -42,15 +43,29 @@ function Home() {
         }
     };
 
-    const handleEditBudgetSubmit = async () => {
+    // const handleEditBudgetSubmit = async () => {
+    //     try {
+    //         editedBudgetObject.token = JSON.parse(localStorage.getItem("token"));
+    //         let result = await axios.put(`${REACT_APP_SERVER}/editBudget`, editedBudgetObject);
+    //         // TODO: change from returning budget to returning userData
+    //         localStorage.setItem('userData', JSON.stringify(result.data));
+    //         setData(result.data);
+    //         handleEditModalChange();
+    //     } catch (e) {
+    //         console.error(e.message);
+    //     }
+    // }
+
+    const handleEditExpensesSubmit = async () => {
         try {
-            // TODO: Create route on backend for PUT /budget, return full user once done (returning full Budget??)
-            // Returns full budget/ Only updates additionalExpenses
-            // editedBudgetObject.token = JSON.parse(localStorage.getItem("token"));
-            // let result = await axios.put(`${REACT_APP_SERVER}/budget`, editedBudgetObject);
+            editedExpensesObject.token = JSON.parse(localStorage.getItem("token"));
+            editedExpensesObject.budgetName = selectedBudget;
+            let result = await axios.put(`${REACT_APP_SERVER}/editExpenses`, editedExpensesObject);
+            setBudget(result.data);
+            // TODO: change from returning budget to returning userData
             // localStorage.setItem('userData', JSON.stringify(result.data));
             // setData(result.data);
-            // handleEditModalChange();
+            handleEditModalChange();
         } catch (e) {
             console.error(e.message);
         }
@@ -58,10 +73,11 @@ function Home() {
 
     const displayBudget = async (budgetName) => {
         // Todo: Create weekly remaining budget
+        setSelectedBudget(budgetName);
         let tempToken = JSON.parse(localStorage.getItem("token"));
         let params = { budgetName: budgetName, token: tempToken };
         let { data } = await axios.get(`${REACT_APP_SERVER}/budget`, { params });
-        let moneyRemainingMonthly = data.monthlyIncome - data.personalSavings - data.retirementSavings - data.monthlyLivingExpenses - data.additionalExpenses;
+        let moneyRemainingMonthly = data.monthlyIncome - (data.personalSavings || 0) - (data.retirementSavings || 0) - (data.monthlyLivingExpenses || 0) - (data.additionalExpenses || 0);
         moneyRemainingMonthly = Math.round(moneyRemainingMonthly * 100) / 100;
         let moneyRemainingDaily = Math.round((moneyRemainingMonthly / getRemainingDays()) * 100) / 100;
         data.moneyRemainingMonthly = moneyRemainingMonthly;
@@ -94,7 +110,7 @@ function Home() {
             <Button variant="outlined">Edit Budget</Button>
             <Button variant="outlined" onClick={handleEditModalChange}>Add a daily expense or gain</Button>
             <CreateBudgetModal handleClose={handleCreateModalChange} open={openCreateModal} handleInput={handleCreateBudgetInput} handleSubmit={handleCreateBudgetSubmit} />
-            <EditBudgetModal handleClose={handleEditModalChange} open={openEditModal} handleInput={handleEditBudgetInput} handleSubmit={handleEditBudgetSubmit} />
+            <EditBudgetModal handleClose={handleEditModalChange} open={openEditModal} handleInput={handleEditExpensesInput} handleSubmit={handleEditExpensesSubmit} />
         </div>
     );
 }
