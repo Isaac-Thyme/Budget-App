@@ -46,11 +46,11 @@ routeObject.budget = async function (req, res) {
             let u = await Users.findOne({ username: req.username });
             let temp = {};
             temp.budgetName = req.body.budgetName;
-            temp.monthlyIncome = req.body.monthlyIncome || undefined;
-            temp.monthlyLivingExpenses = req.body.monthlyLivingExpenses || undefined;
-            temp.additionalExpenses = req.body.additionalExpenses || undefined;
-            temp.personalSavings = req.body.personalSavings || undefined;
-            temp.retirementSavings = req.body.retirementSavings || undefined;
+            temp.monthlyIncome = req.body.monthlyIncome || 0;
+            temp.monthlyLivingExpenses = req.body.monthlyLivingExpenses || 0;
+            temp.additionalExpenses = req.body.additionalExpenses || 0;
+            temp.personalSavings = req.body.personalSavings || 0;
+            temp.retirementSavings = req.body.retirementSavings || 0;
             let createdBudget = await Budget.create(temp);
             u.budget.push(createdBudget.budgetName);
             u.save();
@@ -70,11 +70,30 @@ routeObject.getBudget = async function (req, res) {
     }
 }
 
-routeObject.edit = async function (req, res) {
+routeObject.editExpenses = async function (req, res) {
     try {
         let foundBudget = await Budget.findOne({ budgetName: req.body.budgetName });
-        let newExpenses = foundBudget.additionalExpenses + req.body.additionalExpenses;
+        let newExpenses = foundBudget.additionalExpenses + parseInt(req.body.additionalExpenses);
         let budget = await Budget.findOneAndUpdate({ budgetName: req.body.budgetName }, { additionalExpenses: newExpenses }, { new: true });
+        res.status(200).send(budget);
+    } catch {
+        res.status(400).send('Budget not found');
+    }
+}
+
+routeObject.editBudget = async function (req, res) {
+    try {
+        let foundBudget = await Budget.findOne({ budgetName: req.body.budgetName });
+        let budget = await Budget.findOneAndUpdate(
+            { budgetName: req.body.budgetName },
+            {
+                monthlyIncome: req.body.monthlyIncome,
+                monthlyLivingExpenses: req.body.monthlyLivingExpenses,
+                additionalExpenses: req.body.additionalExpenses,
+                personalSavings: req.body.personalSavings,
+                retirementSavings: req.body.retirementSavings,
+            },
+            { new: true });
         res.status(200).send(budget);
     } catch {
         res.status(400).send('Budget not found');

@@ -1,12 +1,12 @@
 import { Button, TextField, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from "@mui/material";
 
-function EditBudgetModal({ open, handleClose, handleInput, handleSubmit }) {
+function EditExpensesModal({ open, handleClose, handleInput, handleSubmit }) {
     return (
         <Dialog open={open} onClose={handleClose}>
-            <DialogTitle>Create a budget</DialogTitle>
+            <DialogTitle>Edit Expenses</DialogTitle>
             <DialogContent>
                 <DialogContentText>
-                    Fill out the below questions to create a customized budget!
+                    Add or subtract from your additional expenses below
                 </DialogContentText>
                 <TextField
                     autoFocus
@@ -37,4 +37,4 @@ function EditBudgetModal({ open, handleClose, handleInput, handleSubmit }) {
     );
 }
 
-export default EditBudgetModal;
+export default EditExpensesModal;
