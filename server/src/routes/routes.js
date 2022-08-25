@@ -83,7 +83,6 @@ routeObject.editExpenses = async function (req, res) {
 
 routeObject.editBudget = async function (req, res) {
     try {
-        let foundBudget = await Budget.findOne({ budgetName: req.body.budgetName });
         let budget = await Budget.findOneAndUpdate(
             { budgetName: req.body.budgetName },
             {
