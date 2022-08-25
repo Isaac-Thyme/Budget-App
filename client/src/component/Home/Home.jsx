@@ -1,6 +1,6 @@
 import { Button } from "@mui/material";
 import { useState, useEffect } from "react";
-import { handleCreateBudgetInput, handleEditExpensesInput, budgetObject, editedExpensesObject } from '../../functions/handleInputHome.js';
+import { handleCreateBudgetInput, handleEditExpensesInput, clearObject, budgetObject, editedExpensesObject } from '../../functions/handleInputHome.js';
 import axios from 'axios';
 import { getRemainingDays } from "../../functions/getDate";
 import BudgetTable from "../BudgetTable/BudgetTable.jsx";
@@ -14,6 +14,7 @@ function Home() {
     const [data, setData] = useState('');
     const [openCreateModal, setOpenCreateModal] = useState(false);
     const [openEditModal, setOpenEditModal] = useState(false);
+    const [openConditionalEdit, setOpenConditionalEdit] = useState(false);
     const [budget, setBudget] = useState('');
     const [token, setToken] = useState('');
     const [selectedBudget, setSelectedBudget] = useState('');
@@ -24,11 +25,18 @@ function Home() {
     }, [setData, setToken]);
 
     const handleCreateModalChange = () => {
+        clearObject();
         setOpenCreateModal(!openCreateModal);
     }
 
     const handleEditModalChange = () => {
+        clearObject();
         setOpenEditModal(!openEditModal);
+    }
+
+    const handleConditionalEdit = () => {
+        clearObject();
+        setOpenConditionalEdit(!openConditionalEdit);
     }
 
     const handleCreateBudgetSubmit = async () => {
@@ -43,18 +51,16 @@ function Home() {
         }
     };
 
-    // const handleEditBudgetSubmit = async () => {
-    //     try {
-    //         editedBudgetObject.token = JSON.parse(localStorage.getItem("token"));
-    //         let result = await axios.put(`${REACT_APP_SERVER}/editBudget`, editedBudgetObject);
-    //         // TODO: change from returning budget to returning userData
-    //         localStorage.setItem('userData', JSON.stringify(result.data));
-    //         setData(result.data);
-    //         handleEditModalChange();
-    //     } catch (e) {
-    //         console.error(e.message);
-    //     }
-    // }
+    const handleEditBudgetSubmit = async () => {
+        try {
+            budgetObject.token = JSON.parse(localStorage.getItem("token"));
+            let result = await axios.put(`${REACT_APP_SERVER}/editBudget`, budgetObject);
+            setBudget(result.data);
+            handleConditionalEdit();
+        } catch (e) {
+            console.error(e.message);
+        }
+    }
 
     const handleEditExpensesSubmit = async () => {
         try {
@@ -62,9 +68,6 @@ function Home() {
             editedExpensesObject.budgetName = selectedBudget;
             let result = await axios.put(`${REACT_APP_SERVER}/editExpenses`, editedExpensesObject);
             setBudget(result.data);
-            // TODO: change from returning budget to returning userData
-            // localStorage.setItem('userData', JSON.stringify(result.data));
-            // setData(result.data);
             handleEditModalChange();
         } catch (e) {
             console.error(e.message);
@@ -101,14 +104,19 @@ function Home() {
                         )}
                     </div>
                     {budget ? (
-                        <BudgetTable budget={budget} />
+                        <BudgetTable budget={budget} openConditionalEdit={openConditionalEdit} />
                     ) : (
                         <BudgetTable budget={fakeBudget} />
                     )}
                 </div>
             ) : null}
-            <Button variant="outlined">Edit Budget</Button>
+            <Button variant="outlined" onClick={handleConditionalEdit}>Edit Budget</Button>
             <Button variant="outlined" onClick={handleEditModalChange}>Add a daily expense or gain</Button>
+            {openConditionalEdit ? (
+                <>
+                    <Button variant="outlined" onClick={handleEditBudgetSubmit}>Submit Budget Change</Button>
+                </>
+            ) : null}
             <CreateBudgetModal handleClose={handleCreateModalChange} open={openCreateModal} handleInput={handleCreateBudgetInput} handleSubmit={handleCreateBudgetSubmit} />
             <EditBudgetModal handleClose={handleEditModalChange} open={openEditModal} handleInput={handleEditExpensesInput} handleSubmit={handleEditExpensesSubmit} />
         </div>
