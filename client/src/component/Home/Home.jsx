@@ -42,9 +42,9 @@ function Home() {
     const handleCreateBudgetSubmit = async () => {
         try {
             budgetObject.token = JSON.parse(localStorage.getItem("token"));
-            let result = await axios.post(`${REACT_APP_SERVER}/budget`, budgetObject);
-            localStorage.setItem('userData', JSON.stringify(result.data));
-            setData(result.data);
+            let { data } = await axios.post(`${REACT_APP_SERVER}/budget`, budgetObject);
+            localStorage.setItem('userData', JSON.stringify(data));
+            setData(data);
             handleCreateModalChange();
         } catch (e) {
             console.error(e.message);
@@ -54,8 +54,9 @@ function Home() {
     const handleEditBudgetSubmit = async () => {
         try {
             budgetObject.token = JSON.parse(localStorage.getItem("token"));
-            let result = await axios.put(`${REACT_APP_SERVER}/editBudget`, budgetObject);
-            setBudget(result.data);
+            let { data } = await axios.put(`${REACT_APP_SERVER}/editBudget`, budgetObject);
+            setBudget(data);
+            displayBudget(selectedBudget);
             handleConditionalEdit();
         } catch (e) {
             console.error(e.message);
@@ -66,8 +67,9 @@ function Home() {
         try {
             editedExpensesObject.token = JSON.parse(localStorage.getItem("token"));
             editedExpensesObject.budgetName = selectedBudget;
-            let result = await axios.put(`${REACT_APP_SERVER}/editExpenses`, editedExpensesObject);
-            setBudget(result.data);
+            let { data } = await axios.put(`${REACT_APP_SERVER}/editExpenses`, editedExpensesObject);
+            setBudget(data);
+            displayBudget(selectedBudget);
             handleEditModalChange();
         } catch (e) {
             console.error(e.message);

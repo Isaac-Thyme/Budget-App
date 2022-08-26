@@ -68,7 +68,7 @@ function BudgetTable({ budget, openConditionalEdit }) {
                             autoFocus
                             margin="dense"
                             id="retirement-savings"
-                            label="New % of income to save for retirement"
+                            label="New $ of income to save for retirement"
                             fullWidth
                             variant="standard"
                             type="number"

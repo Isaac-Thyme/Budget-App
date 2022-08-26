@@ -12,7 +12,7 @@ function CreateBudgetModal({ open, handleClose, handleInput, handleSubmit }) {
                     autoFocus
                     margin="dense"
                     id="name"
-                    label="Budget name"
+                    label="Budget Name"
                     fullWidth
                     variant="standard"
                     onChange={handleInput}
@@ -21,7 +21,7 @@ function CreateBudgetModal({ open, handleClose, handleInput, handleSubmit }) {
                     autoFocus
                     margin="dense"
                     id="income"
-                    label="Monthly income"
+                    label="Monthly Income"
                     fullWidth
                     variant="standard"
                     type="number"
@@ -31,7 +31,7 @@ function CreateBudgetModal({ open, handleClose, handleInput, handleSubmit }) {
                     autoFocus
                     margin="dense"
                     id="expenses"
-                    label="Monthly expenses"
+                    label="Monthly Expenses"
                     fullWidth
                     variant="standard"
                     type="number"
@@ -41,7 +41,7 @@ function CreateBudgetModal({ open, handleClose, handleInput, handleSubmit }) {
                     autoFocus
                     margin="dense"
                     id="additional-expenses"
-                    label="Additional monthly expenses"
+                    label="Additional Monthly Expenses"
                     fullWidth
                     variant="standard"
                     type="number"
@@ -51,7 +51,7 @@ function CreateBudgetModal({ open, handleClose, handleInput, handleSubmit }) {
                     autoFocus
                     margin="dense"
                     id="retirement-savings"
-                    label="% of income to save for retirement"
+                    label="$ Amount to Save for Retirement"
                     fullWidth
                     variant="standard"
                     type="number"
@@ -61,7 +61,7 @@ function CreateBudgetModal({ open, handleClose, handleInput, handleSubmit }) {
                     autoFocus
                     margin="dense"
                     id="personal-savings"
-                    label="$ amount of desired monthly savings"
+                    label="$ Amount of Desired Monthly Savings"
                     fullWidth
                     variant="standard"
                     type="number"
