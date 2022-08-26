@@ -92,6 +92,12 @@ function Home() {
 
     return (
         <div id="home">
+            {!token ? (
+                <>
+                    <h3>Please log in or sign up to begin creating budgets!</h3>
+                    <BudgetTable budget={fakeBudget} />
+                </>
+            ) : null}
             {token ? (
                 <div id="loggedInView">
                     <Button variant="outlined" onClick={handleCreateModalChange}>Create your budget!</Button>
@@ -110,10 +116,10 @@ function Home() {
                     ) : (
                         <BudgetTable budget={fakeBudget} />
                     )}
+                    <Button variant="outlined" onClick={handleConditionalEdit}>Edit Budget</Button>
+                    <Button variant="outlined" onClick={handleEditModalChange}>Add a daily expense or gain</Button>
                 </div>
             ) : null}
-            <Button variant="outlined" onClick={handleConditionalEdit}>Edit Budget</Button>
-            <Button variant="outlined" onClick={handleEditModalChange}>Add a daily expense or gain</Button>
             {openConditionalEdit ? (
                 <>
                     <Button variant="outlined" onClick={handleEditBudgetSubmit}>Submit Budget Change</Button>
