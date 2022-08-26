@@ -23,19 +23,39 @@ const handleCreateBudgetInput = (e) => {
             budgetObject.budgetName = e.target.value;
             break;
         case "income":
-            budgetObject.monthlyIncome = e.target.value;
+            if (e.target.value !== '') {
+                budgetObject.monthlyIncome = e.target.value;
+            } else {
+                delete budgetObject.monthlyIncome;
+            }
             break;
         case "expenses":
-            budgetObject.monthlyLivingExpenses = e.target.value;
+            if (e.target.value !== '') {
+                budgetObject.monthlyLivingExpenses = e.target.value;
+            } else {
+                delete budgetObject.monthlyLivingExpenses;
+            }
             break;
         case "additional-expenses":
-            budgetObject.additionalExpenses = e.target.value;
+            if (e.target.value !== '') {
+                budgetObject.additionalExpenses = e.target.value;
+            } else {
+                delete budgetObject.additionalExpenses;
+            }
             break;
         case "retirement-savings":
-            budgetObject.retirementSavings = e.target.value;
+            if (e.target.value !== '') {
+                budgetObject.retirementSavings = e.target.value;
+            } else {
+                delete budgetObject.retirementSavings;
+            }
             break;
         case "personal-savings":
-            budgetObject.personalSavings = e.target.value;
+            if (e.target.value !== '') {
+                budgetObject.personalSavings = e.target.value;
+            } else {
+                delete budgetObject.personalSavings;
+            }
             break;
         default:
             console.log("Something went wrong");
