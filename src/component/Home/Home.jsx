@@ -1,3 +1,4 @@
+import './Home.css';
 import { Button } from "@mui/material";
 import { useState, useEffect } from "react";
 import { handleCreateBudgetInput, handleEditExpensesInput, clearObject, budgetObject, editedExpensesObject } from '../../functions/handleInputHome.js';
@@ -94,7 +95,7 @@ function Home() {
         <div id="home">
             {!token ? (
                 <>
-                    <h3>Please log in or sign up to begin creating budgets!</h3>
+                    <h3 id="loggedOutView">Please log in or sign up to begin creating budgets!</h3>
                     <BudgetTable budget={fakeBudget} />
                 </>
             ) : null}
