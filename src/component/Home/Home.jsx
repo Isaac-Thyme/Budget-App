@@ -104,7 +104,7 @@ function Home() {
                     <Button variant="outlined" onClick={handleCreateModalChange}>Create your budget!</Button>
                     <div id="budget">
                         <p>Your budgets: </p>
-                        {data.budget ? data.budget.map((item, idx) => (
+                        {data.budget.length ? data.budget.map((item, idx) => (
                             <div key={idx}>
                                 <Button onClick={() => displayBudget(item)}>{item}</Button>
                             </div>
@@ -117,8 +117,12 @@ function Home() {
                     ) : (
                         <BudgetTable budget={fakeBudget} />
                     )}
-                    <Button variant="outlined" onClick={handleConditionalEdit}>Edit Budget</Button>
-                    <Button variant="outlined" onClick={handleEditModalChange}>Add a daily expense or gain</Button>
+                    {selectedBudget ? (
+                        <div>
+                            <Button variant="outlined" onClick={handleConditionalEdit} id='editBtns'>Edit Budget</Button>
+                            <Button variant="outlined" onClick={handleEditModalChange} id='editBtns'>Add a daily expense or gain</Button>
+                        </div>
+                    ) : null}
                 </div>
             ) : null}
             {openConditionalEdit ? (

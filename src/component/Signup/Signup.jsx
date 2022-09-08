@@ -1,5 +1,5 @@
 import './Signup.css';
-import { Box, InputLabel, Input, InputAdornment, Button } from "@mui/material";
+import { InputLabel, Input, InputAdornment, Button } from "@mui/material";
 import { AccountCircle } from "@mui/icons-material";
 import { useState, useRef } from "react";
 import axios from 'axios';
@@ -15,10 +15,8 @@ function Signup() {
     const handleSubmit = async () => {
         try {
             if (userObject.password !== tempPassword) {
-                console.log("Password fields do not match.");
             } else {
                 // handling form submit
-                console.log(userObject);
                 let result = await axios.post(`${process.env.REACT_APP_SERVER}/signup`, userObject);
                 localStorage.setItem('userData', JSON.stringify(result.data.user));
                 localStorage.setItem('token', JSON.stringify(result.data.token));
@@ -41,13 +39,14 @@ function Signup() {
             {error ? (
                 <h3 id="error">{error === 'Network Error' ? 'Servers are down...' : 'Request failed with status code 500' ? 'Email already in use... Please use a different email.' : error}</h3>
             ) : null}
-            <Box>
+            <div id='signupForm'>
                 {/* creating the username textfield */}
                 <InputLabel htmlFor="input-with-icon-adornment">
                     Username
                 </InputLabel>
                 <Input
                     id="username"
+                    className='input'
                     ref={usernameEl}
                     startAdornment={
                         <InputAdornment position="start">
@@ -63,6 +62,7 @@ function Signup() {
                 <Input
                     onChange={(e) => setTempPassword(e.target.value)}
                     id="password"
+                    className='input'
                     type="password"
                 />
                 {/* creating the confirm password textfield */}
@@ -72,6 +72,7 @@ function Signup() {
                 <Input
                     id="confirmPassword"
                     type="password"
+                    className='input'
                     onChange={handleInput}
                 />
                 {/* creating the email textfield */}
@@ -81,10 +82,11 @@ function Signup() {
                 <Input
                     id="email"
                     type="email"
+                    className='input'
                     onChange={handleInput}
                 />
-            </Box>
-            <Button variant="outlined" onClick={handleSubmit}>Submit</Button>
+                <Button variant="outlined" onClick={handleSubmit} id='btn'>Submit</Button>
+            </div>
         </div>
     );
 }

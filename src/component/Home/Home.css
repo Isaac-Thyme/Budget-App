@@ -2,3 +2,11 @@
     padding: 15px 0;
     font-size: 2rem;
 }
+
+#loggedInView {
+    margin: 10px;
+}
+
+#editBtns {
+    margin: 5px auto;
+}
