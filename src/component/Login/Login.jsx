@@ -1,7 +1,8 @@
-import { Box, InputLabel, Input, InputAdornment, Button } from "@mui/material";
+import { InputLabel, Input, InputAdornment, Button } from "@mui/material";
 import { AccountCircle } from "@mui/icons-material";
 import { useState } from "react";
 import axios from 'axios';
+import './Login.css';
 const REACT_APP_SERVER = process.env.REACT_APP_SERVER;
 
 // Todo: Error handling for password mismatch
@@ -16,7 +17,6 @@ function Login() {
 
     const handleSubmit = async () => {
         try {
-            console.log('USER OBJECT', userObject);
             let result = await axios.post(`${REACT_APP_SERVER}/login`, userObject);
             localStorage.setItem('userData', JSON.stringify(result.data.user));
             localStorage.setItem('token', JSON.stringify(result.data.token));
@@ -41,7 +41,6 @@ function Login() {
                 });
                 break;
             default:
-                console.log("Something went wrong");
         }
     }
 
@@ -51,13 +50,14 @@ function Login() {
             {error ? (
                 <h3 id="error">{error === 'Network Error' ? 'Servers are down...' : error}</h3>
             ) : null}
-            <Box>
+            <div id="loginForm">
                 {/* creating the username textfield */}
                 <InputLabel htmlFor="input-with-icon-adornment">
                     Username
                 </InputLabel>
                 <Input
                     id="username"
+                    className="input"
                     startAdornment={
                         <InputAdornment position="start">
                             <AccountCircle />
@@ -71,11 +71,12 @@ function Login() {
                 </InputLabel>
                 <Input
                     id="password"
+                    className="input"
                     type="password"
                     onChange={handleInput}
                 />
-                <Button variant="outlined" onClick={handleSubmit} >Submit</Button>
-            </Box>
+                <Button variant="outlined" onClick={handleSubmit} id="btn">Submit</Button>
+            </div>
         </div>
     );
 }

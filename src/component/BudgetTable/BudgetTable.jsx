@@ -7,10 +7,10 @@ function BudgetTable({ budget, openConditionalEdit }) {
     return (
         <div id="budgetDisplay">
             <div className="flexChildren">
-                <h2>Selected Budget: {budget ? budget.budgetName : ""}</h2>
+                <h2>Selected Budget: <span id='budgetName'>{budget ? budget.budgetName : ""}</span></h2>
             </div>
             <div className="flexChildren">
-                <h2>Monthly Income: {budget.monthlyIncome}</h2>
+                <h2>Monthly Income: ${budget.monthlyIncome}</h2>
                 {openConditionalEdit ? (
                     <>
                         <TextField
@@ -27,7 +27,7 @@ function BudgetTable({ budget, openConditionalEdit }) {
                 ) : null}
             </div>
             <div className="flexChildren">
-                <h2>Monthly Living Expenses: {budget.monthlyLivingExpenses}</h2>
+                <h2>Monthly Living Expenses: ${budget.monthlyLivingExpenses}</h2>
                 {openConditionalEdit ? (
                     <>
                         <TextField
@@ -44,7 +44,7 @@ function BudgetTable({ budget, openConditionalEdit }) {
                 ) : null}
             </div>
             <div className="flexChildren">
-                <h2>Monthly Personal Savings: {budget.personalSavings}</h2>
+                <h2>Monthly Personal Savings: ${budget.personalSavings}</h2>
                 {openConditionalEdit ? (
                     <>
                         <TextField
@@ -61,7 +61,7 @@ function BudgetTable({ budget, openConditionalEdit }) {
                 ) : null}
             </div>
             <div className="flexChildren">
-                <h2>Monthly Additional Retirement Savings: {budget.retirementSavings}</h2>
+                <h2>Monthly Additional Retirement Savings: ${budget.retirementSavings}</h2>
                 {openConditionalEdit ? (
                     <>
                         <TextField
@@ -78,7 +78,7 @@ function BudgetTable({ budget, openConditionalEdit }) {
                 ) : null}
             </div>
             <div className="flexChildren">
-                <h2>Additional Monthly Expenses: {budget.additionalExpenses}</h2>
+                <h2>Additional Monthly Expenses: ${budget.additionalExpenses}</h2>
                 {openConditionalEdit ? (
                     <>
                         <TextField

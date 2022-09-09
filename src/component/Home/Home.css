@@ -3,4 +3,10 @@
     font-size: 2rem;
 }
 
-/* Need to center title */
+#loggedInView {
+    margin: 10px;
+}
+
+#editBtns {
+    margin: 5px auto;
+}

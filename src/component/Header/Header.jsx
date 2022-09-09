@@ -21,10 +21,10 @@ function Header() {
                     token ? (
                         <Link className='link' to="/" onClick={logout}>Logout</Link>
                     ) : (
-                        <>
+                        <div id='signInBtns'>
                             <Link className='link' to="/login">Login</Link>
                             <Link className='link' to="/signup">Signup</Link>
-                        </>
+                        </div>
                     )
                 }
             </div>
